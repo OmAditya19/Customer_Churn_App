@@ -1,0 +1,47 @@
+%%Generation of pointing error random variable
+w_z = 0.3; %in m beam width
+a =  0.05;%in m reviever radius
+nu = sqrt(((a^2)*pi)/(2*(w_z^2)));
+a_0 = [erf(nu)] ^(2) ;%value of A0
+sigmas = (0.18)^2; 
+w_z_eq_squared = w_z^2 * (sqrt(pi) * erf(nu)) / (2 * nu * exp(-nu^2));
+w_z_eq = sqrt(w_z_eq_squared);
+epsilonS = (w_z_eq^2)/(4*sigmas);
+
+h_til = h;
+f_h = zeros(length(h_til),1);
+p2 = zeros(length(h_til),1);
+p1 = (epsilonS/(a_0^epsilonS));
+
+%% Histogram Method
+% 1. Choose number of bins
+numBins = 50;
+
+% 2. Find min and max
+xmin = min(h);
+xmax = max(h);
+
+% 3. Define bin edges
+edges = linspace(xmin, xmax, numBins+1);
+
+% 4. Count values in each bin
+counts = histcounts(h, edges);
+
+% 5. Compute bin width
+binWidth = edges(2) - edges(1);
+
+% 6. Normalize to get PDF
+pdfVals = counts / (sum(counts) * binWidth);
+
+% 7. Bin centers (for plotting)
+binCenters = edges(1:end-1) + binWidth/2;
+
+bar(binCenters, pdfVals, 1);  % bar plot, width=1 means no gap
+xlabel('Value'); ylabel('Density');
+title('Manual PDF Estimate');
+%xlim([0 1e-6])
+grid on
+hold on
+plot(h,f_h,LineWidth=4)
+% legend('Histogram','Anatlytical PDF')
+% set(gca,'YScale','log')

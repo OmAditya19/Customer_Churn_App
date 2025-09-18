@@ -1,0 +1,16 @@
+{
+  "rules": [
+    {
+      "churn_threshold": 0.95,
+      "recommendation": "Offer 25% discount coupon"
+    },
+    {
+      "churn_threshold": 0.85,
+      "recommendation": "Offer 15% discount coupon"
+    },
+    {
+      "churn_threshold": 0.7,
+      "recommendation": "Send personalized retention email"
+    }
+  ]
+}
